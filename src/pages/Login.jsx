@@ -4,6 +4,9 @@ import { TbSocial } from 'react-icons/tb'
 import TextInput from '../components/TextInput'
 import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
+import Loading from '../components/Loading'
+import CustomButton from '../components/CustomButton'
+import { BgImage } from '../assets'
 
 const Login = () => {
   const { register, handleSubmit, formState: { errors }, } = useForm({ mode: "onChange" })
@@ -69,14 +72,34 @@ const Login = () => {
             }
 
             {
-              isSubmitting ? <Loading /> : <CustomButton />
+              isSubmitting ? <Loading/> : <CustomButton 
+              type="submit" 
+              containerStyles={`inline-flex justify-center rounded-md bg-blue px-8 py-3 text-sm font-medium text-white outline-none`} 
+              title="Login"/>
             }
 
           </form>
+
+            <p className='text-ascent-2 text-sm text-center'>
+              Don't have an account?
+              <Link to='/register'
+              className='text-[#065ad8] font-semibold ml-2 cursor-pointer'>
+              Create Account
+              </Link>
+            </p>
         </div>
 
         {/* {RIGHT} */}
-        <div></div>
+        <div className='hidden w-1/2 h-full lg:flex flex-col items-center justify-center bg-blue'>
+          <div className='relative w-full flex items-center justify-center'>
+              <img 
+                src={BgImage}
+                alt='Bg Image'
+                className='w-48 2xl:w-64 h-48 2xl:h-64 rounded-full object-cover'
+              />
+          </div>
+
+        </div>
 
       </div>
     </div>
