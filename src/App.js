@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 
 function Layout(){
     const {user} = useSelector(state=> state.user);
+   
     const location = useLocation()
  
     return user?.token?(
