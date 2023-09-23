@@ -43,7 +43,7 @@ const Login = () => {
               label="Email Address"
               type="email"
               register={register("email", {
-                required: "Email Address is required"
+                required: "Email Address is required!"
               })}
               styles="w-full rounded-full"
               labelStyle='ml-2'
@@ -72,7 +72,13 @@ const Login = () => {
 
             {
               errMsg?.message && (
-                <span className={`text-sm ${errMsg?.status == "failed" ? "text-[#f64949fe]" : "text-[#2ba150fe]"} mt-0.5`}>
+                <span role='alert'
+                className={`text-sm 
+                ${errMsg?.status == "failed" 
+                ? "text-[#f64949fe]" 
+                : "text-[#2ba150fe]"}
+                 mt-0.5`}>
+
                   {errMsg?.message}</span>
               )
             }
