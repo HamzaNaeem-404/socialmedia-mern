@@ -12,6 +12,7 @@ import { BiImages, BiSolidVideo } from 'react-icons/bi'
 import TextInput from '../components/TextInput'
 import { useForm } from 'react-hook-form'
 import Loading from '../components/Loading'
+import PostCard from '../components/PostCard'
 
 const Home = () => {
   const {user}=useSelector(state=>state.user);
