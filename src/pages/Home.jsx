@@ -13,9 +13,10 @@ import TextInput from '../components/TextInput'
 import { useForm } from 'react-hook-form'
 import Loading from '../components/Loading'
 import PostCard from '../components/PostCard'
+import EditProfile from '../components/EditProfile'
 
 const Home = () => {
-  const {user} = useSelector(state=>state.user);
+  const {user, edit} = useSelector(state=>state.user);
   const [friendRequest, setFriendRequst] = useState(requests);
   const [suggestedFriends, setSuggestedFriends] = useState(suggest);
 
@@ -28,6 +29,7 @@ const Home = () => {
    
   const handlePostSubmit = async(data)=>{}
   return (
+    <>
     <div className='home w-full px-0 lg:px-10 pb-20 2xl:px-40 bg-bgColor lg:rounded-lg h-screen overflow-hidden'>
       <TopBar/>
 
@@ -238,6 +240,9 @@ const Home = () => {
         </div>
       </div>
     </div>
+
+    {edit && <EditProfile />}
+    </>
   )
 }
 
