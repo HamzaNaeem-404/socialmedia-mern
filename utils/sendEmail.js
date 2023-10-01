@@ -36,13 +36,13 @@ background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(
         <h4>Hi ${firstName},</h4>
         <p>Please verify your email address so we can know that it's really you.
         <br>
-        <p style="color:white;">This link <b>expires in 1 hour</b></p>
+        <p>This link <b>expires in 1 hour</b></p>
         <br>
-        <a href=${link} style="color:#fff; padding: 14px; text-decoration:none; background-color:#000">Email Address</a>
+        <a href=${link} style="color:#fff; padding: 14px; text-decoration:none; background-color:#000">Verify Email Address</a>
         </p>
         <div style="margin-top: 20px;">
-        <h5>Best Regards</h5>
-        <h5>SocialBuzz Team</h5>
+        <h1>Best Regards</h1>
+        <h1>SocialBuzz Team</h1>
         </div>
         
         </div>`,
