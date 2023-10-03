@@ -30,7 +30,7 @@ export const sendVerificationEmail = async (user, res) => {
 
     html: `<div style = 'font-family: Arial, sans-serif; font-size: 20px; 
         color: #333 background: rgb(2,0,36);
-background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%); color:white; padding: 5px 20px;'>
+        background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%); color:white; padding: 5px 20px;'>
         <h1 style="color: rgb(8,56,188)">Please verify your email address</h1>
         <hr>
         <h4>Hi ${firstName},</h4>
@@ -41,8 +41,8 @@ background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(
         <a href=${link} style="color:#fff; padding: 14px; text-decoration:none; background-color:#000">Verify Email Address</a>
         </p>
         <div style="margin-top: 20px;">
-        <h1>Best Regards</h1>
-        <h1>SocialBuzz Team</h1>
+        <h5>Best Regards</h5>
+        <h5>SocialBuzz Team</h5>
         </div>
         
         </div>`,
@@ -52,7 +52,7 @@ background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(
      const hashedToken = await hashString(token);
 
      const newVerifiedEmail = await Verification.create({
-        userID: _id,
+        userId: _id,
         token: hashedToken,
         createdAt: Date.now(),
         expireAt: Date.now()+ 3600000,
