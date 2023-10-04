@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import { v4 as uuidv4 } from "uuid";
 import { hashString } from "./index.js";
 import Verification from "../models/emailVerification.js";
+import PasswordReset from "../models/PasswordReset.js";
 
 dotenv.config();
 
@@ -72,3 +73,51 @@ export const sendVerificationEmail = async (user, res) => {
     res.status(404).json({message: "Something went wrong"});
   }
 };
+
+export const resetPasswordLink = async (user, res)=>{
+  const {_id, email} = user;
+  const token = _id + uuidv4();
+  const link = APP_URL + "users/reset-password/"+ _id + "/" + token;
+
+  //mail 
+  const mailOptions = {
+    from: AUTH_EMAIL,
+    to: email,
+    subject: "Password Reset",
+    html: `<p style="font-family: Arial, sans-serif; font-size:16px; color:#333; background-color:white;">
+    Password reset link. Please click the link below to reset password.
+    <br>
+    <p style="font-size:18px; font-family: Arial, sans-serif;"><b>This link expires in 10 minutes</b></p>
+    <br>
+    <a href=${link} style="color:#fff; padding: 10px; text-decoration:none; background-color:black; font-family: Arial, sans-serif; border-radius:5px;">Password Reset</a>
+    </p>`,
+  };
+
+  try{
+    const hashedToken = await hashString(token);
+    const resetEmail = await PasswordReset.create({
+      userId: _id,
+      email: email,
+      token: hashedToken,
+      createdAt: Date.now(),
+      expiresAt: Date.now()+ 600000
+    });
+
+    if(resetEmail){
+      transport.sendMail(mailOptions)
+      .then(()=>{
+        res.status(201).send({
+          success: "PENDING",
+          message: "Reset Password Link has been sent to your account.",
+        });
+      }).catch((err)=>{
+        console.log(err);
+        res.staus(404).json({message: "Something went wrong"});
+      });
+    }
+  }
+  catch(error){
+    console.log(error);
+    res.status(404).json({message: "Something went wrong"});
+  }
+}

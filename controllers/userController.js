@@ -1,7 +1,9 @@
 import mongoose from "mongoose";
 import Verification from "../models/emailVerification.js";
 import Users from "../models/userModel.js";
-import { compareString } from "../utils/index.js";
+import { compareString, createJWT, hashString } from "../utils/index.js";
+import PasswordReset from "../models/PasswordReset.js";
+import { resetPasswordLink } from "../utils/sendEmail.js";
 
 export const verifyEmail = async (req, res) => {
   const { userId, token } = req.params;
@@ -10,7 +12,7 @@ export const verifyEmail = async (req, res) => {
     const verificationRecord = await Verification.findOne({ userId });
     
     if (!verificationRecord) {
-      const message = "Invalid Verification link. abey yar record hi ni mila Try again later.";
+      const message = "Invalid Verification link. No record found. Try again later.";
       console.log("Token:", token); // Log the value of 'token'
       return res.redirect(`/users/verified?status=error&message=${message}`);
     }
@@ -65,81 +67,169 @@ export const verifyEmail = async (req, res) => {
   }
 };
 
+export const requestPasswordReset = async (req, res)=>{
+  try{
+    const {email} = req.body;
+    const user = await Users.findOne({email});
+    if(!user){
+      return res.status(404).json({
+        status: "FAILED",
+        message: "Email address not found.",
+      });
+    }
+      const existingRequest = await PasswordReset.findOne({email});
+      if(existingRequest){
+        if(existingRequest.expiresAt > Date.now()){
+          return res.status(201).json({
+            status: "PENDING",
+            message: "Reset password link has already been sent to your email",
+          });
+        }
+        await PasswordReset.findOneAndDelete({email});
+      }
+        await resetPasswordLink(user, res);
 
+  } catch(error){
+    console.log(error);
+    res.status(404).json({message: error.message});
+  }
+};
 
-// export const verifyEmail = async (req, res) => {
-//   const { userId, token } = req.params;
+export const resetPassword = async (req, res)=>{
+  const {userId, token} = req.params;
 
-//   try {
-//     const result = await Verification.findOne({ userId });
+  try{
+      //find record
+      const user = await Users.findById(userId);
 
-//     if (result) {
-//       const { expiresAt, token: hashedToken } = result;
+      if(!user){
+        const message = "Invalid password reset link. Try again";
+        res.redirect(`/users/resetpassword?status=error&message=${message}`);
+      }
 
-//       if (expiresAt < Date.now()) {
-//         VerificationModel.findOneAndDelete({ userId })
-//           .then(() => {
-//             Users.findOneAndDelete({ _id: userId })
-//               .then(() => {
-//                 const message = "Verification Token has Expired.";
-//                 res.redirect(`/users/verified?status=error&message=${message}`);
-//               })
-//               .catch((err) => {
-//                 //_________
-//                 res.redirect(`/users/verified?status=error&message=`);
-//               });
-//           })
-//           .catch((error) => {
-//             console.log(error);
-//             res.redirect(`/users/verified?message=`);
-//           });
-//       } else {
-//         //token Valid
-//         compareString(token, hashedToken)
-//           .then((isMatch) => {
-//             if (isMatch) {
-//               Users.findOneAndUpdate({ _id: userId }, { verified: true })
-//                 .then(() => {
-//                   VerificationModel.findOneAndDelete({ userId })
-//                     .then(() => {
-//                       const message = "Email Verified Successfully";
-//                       res.redirect(
-//                         `/users/verified?status=success&message=${message}`
-//                       );
-//                     })
-//                     .catch((err) => {
-//                       console.log(err);
-//                       const message = "Verification failed or link is invalid";
-//                       res.redirect(
-//                         `/users/verified?status=error&message=${message}`
-//                       );
-//                     });
-//                 })
-//                 .catch((err) => {
-//                   console.log(err);
-//                   const message = "Verification failed or link is invalid";
-//                   res.redirect(
-//                     `/users/verified?status=error&message=${message}`
-//                   );
-//                 });
-//             } else {
-//               //invalid Token
-//               const message = "Verification failed or link is invalid";
-//               res.redirect(`/users/verified?status=error&message=${message}`);
-//             }
-//           })
-//           .catch((err) => {
-//             console.log(err);
-//             res.redirect(`/users/verified?message=`);
-//           });
-//       }
-//     } else {
-//       //1:12 check this route
-//       const message = "Invalid Verification Link.try gain later ";
-//       res.redirect(`/users/verified?status=error&message=${message}`);
-//     }
-//   } catch (error) {
-//     console.log(error);
-//     res.redirect(`/users/verified?message=`);
-//   }
-// };
+      const resetPassword = await PasswordReset.findOne({userId});
+      if(!resetPassword){
+        const message = "Invalid password reset link. Try again";
+        res.redirect(`/users/resetpassword?status=error&message=${message}`);
+      }
+
+      const {expiresAt, token: resetToken } = resetPassword;
+
+      if(expiresAt < Date.now ()){
+        const message = "Reset Password link has expired. Please try again";
+        res.redirect(`/users/resetpassword?status=error&message=${message}`);
+      }
+      else{
+        const isMatch = await compareString(token, resetToken);
+
+        if(!isMatch){
+          const message = "Invalid reset password link. Please try again";
+          res.redirect(`/users/resetpassword?status=error&message=${message}`);
+        }
+        else{
+          res.redirect(`/users/resetpassword?type=reset&id=${userId}`);
+        }
+      }
+  }
+  catch(error){
+    console.log(error);
+    res.status(404).json({message: error.message});
+  }
+};
+
+export const changePassword = async (req, res) => {
+  try {
+    const { userId, password } = req.body;
+    const hashedpassword = await hashString(password);
+    const user = await Users.findByIdAndUpdate(
+      { _id: userId },
+      { password: hashedpassword }
+    );
+    if (user) {
+      await PasswordReset.findOneAndDelete({ userId });
+      res.status(200).json({ok:true})
+      // const message = "Password has been successfully reset";
+      // res.redirect(`/users/resetpassword?status=success&message=${message}`);
+      return;
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({ message: error.message });
+  }
+};
+
+export const getUser = async (req, res, next)=>{
+  try{
+    const {userId} = req.body.user;
+    const {id} = req.params;
+
+     const user = await Users.findById(id ?? userId).populate({
+      path: "friends",
+      select: "-password",
+     });
+     
+     if(!user){
+      return res.status(200).send({
+        message: "User Not Found",
+        success: false,
+      });
+     }
+
+     user.password = undefined;
+     res.status(200).json({
+      success: true,
+      user: user,
+     });
+  }
+  catch(error){
+    console.log(error);
+    res.status(500).json({
+      message: "auth error",
+      success: false,
+      error: error.message
+    });
+  }
+};
+
+export const updateUser = async (req, res, next) =>{
+  try{
+    const {firstName, lastName, location, profileUrl, profession}= req.body;
+
+    if(!(firstName || lastName || location || contact || profession))
+    {
+      next("Please provide all required fields");
+      return;
+    }
+      const {userId} = req.body.user;
+
+      const updateUser = {
+        firstName,
+        lastName,
+        location,
+        profileUrl,
+        profession,
+        _id: userId,
+      };
+
+      const user = await Users.findByIdAndUpdate(userId, updateUser, {
+        new: true,
+      });
+
+        await user.populate({path: "friends", select: "-password"});
+        const token = createJWT(user?._id);
+
+        user.password = undefined;
+
+        res.status(200).json({
+          success: true,
+          message: "User updated successfully",
+          user,
+          token
+        });
+  }
+  catch(error){
+    console.log(error);
+    res.status(404).json({ message: error.message});
+  }
+};
+
