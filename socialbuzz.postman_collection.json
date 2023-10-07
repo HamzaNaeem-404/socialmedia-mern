@@ -1,0 +1,587 @@
+{
+	"info": {
+		"_postman_id": "e564d1ca-c05f-4f4a-9a73-f02792ff913a",
+		"name": "socialbuzz",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30325095"
+	},
+	"item": [
+		{
+			"name": "users account",
+			"item": [
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"firstName\": \"Cyber\",\n  \"lastName\": \"Nerd\",\n  \"email\": \"authentichamza007@gmail.com\",\n  \"password\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8800/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"545hamza@gmail.com\",\n  \"password\": \"12345\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8800/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "resetpassword",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\" :\"545hamza@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8800/users/request-passwordreset",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"users",
+								"request-passwordreset"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getUser",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTFiMTM4OWJjZWJkMWIyNDcwNDk2MGMiLCJpYXQiOjE2OTYzODU0MzcsImV4cCI6MTY5NjQ3MTgzN30.tFsF3xxoMFUMIkSe6n97yN-zDXZANom_UIyHQrdpTsM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8800/users/get-user/651b1389bcebd1b24704960c",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"users",
+								"get-user",
+								"651b1389bcebd1b24704960c"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateUser",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTFiMTM4OWJjZWJkMWIyNDcwNDk2MGMiLCJpYXQiOjE2OTYzODU0MzcsImV4cCI6MTY5NjQ3MTgzN30.tFsF3xxoMFUMIkSe6n97yN-zDXZANom_UIyHQrdpTsM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"lastName\": \"Qureshi\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8800/users/update-user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"users",
+								"update-user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "friendRequest",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTFjZTVjZDRlYWNlY2EwMjk0YmQ5ZmEiLCJpYXQiOjE2OTYzOTI5ODgsImV4cCI6MTY5NjQ3OTM4OH0.smB2K2ZeWmQX1RqmfNcCTqEWZgfj7jECkhQDyHqMQ2M",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"requestTo\": \"651b1389bcebd1b24704960c\" \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8800/users/friend-request",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"users",
+								"friend-request"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "profileViews",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTFiMTM4OWJjZWJkMWIyNDcwNDk2MGMiLCJpYXQiOjE2OTYzODU0MzcsImV4cCI6MTY5NjQ3MTgzN30.tFsF3xxoMFUMIkSe6n97yN-zDXZANom_UIyHQrdpTsM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": \"651b1389bcebd1b24704960c\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8800/users/profile-view",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"users",
+								"profile-view"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-request",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTFiMTM4OWJjZWJkMWIyNDcwNDk2MGMiLCJpYXQiOjE2OTYzOTU0NDgsImV4cCI6MTY5NjQ4MTg0OH0.Xv4YlpXRQ1YEfT1PCMLXhhbmm5cPF6zKoXWc5dyrrIc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8800/users/get-friend-request",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"users",
+								"get-friend-request"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "acceptRequest",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTFiMTM4OWJjZWJkMWIyNDcwNDk2MGMiLCJpYXQiOjE2OTYzOTU5MjUsImV4cCI6MTY5NjQ4MjMyNX0.Tg0KxekyB0CskkeJU0MI9oum4iZaBI624RwjB-afXEE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"rid\":\"651cf2001357a32d27575b15\",\n  \"status\": \"Accepted\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8800/users/accept-request",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"users",
+								"accept-request"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "post",
+			"item": [
+				{
+					"name": "createPost",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTFiMTM4OWJjZWJkMWIyNDcwNDk2MGMiLCJpYXQiOjE2OTY1Njc1NDgsImV4cCI6MTY5NjY1Mzk0OH0.QbbHDZAS1gP-evUPNBJJdZzDA37L4VmqXjp5_qoNYCE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"description\": \"For the last time, I'm going to play video games now. I'm tired of typing. I'm going to play video games now. As a matter of fact, I have also completed the tasks that were assigned to me and we made a wonderful production-grade website that turns out to be magnificent and presentable not only on my portfolio but also as an achievement.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8800/posts/create-post",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"posts",
+								"create-post"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getPosts",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTFiMTM4OWJjZWJkMWIyNDcwNDk2MGMiLCJpYXQiOjE2OTY1Njc1NDgsImV4cCI6MTY5NjY1Mzk0OH0.QbbHDZAS1gP-evUPNBJJdZzDA37L4VmqXjp5_qoNYCE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8800/posts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getPost",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTFiMTM4OWJjZWJkMWIyNDcwNDk2MGMiLCJpYXQiOjE2OTY1Njc1NDgsImV4cCI6MTY5NjY1Mzk0OH0.QbbHDZAS1gP-evUPNBJJdZzDA37L4VmqXjp5_qoNYCE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8800/posts/651f953461bf9798870d8af8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"posts",
+								"651f953461bf9798870d8af8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "commentPost",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTFiMTM4OWJjZWJkMWIyNDcwNDk2MGMiLCJpYXQiOjE2OTY1Njc1NDgsImV4cCI6MTY5NjY1Mzk0OH0.QbbHDZAS1gP-evUPNBJJdZzDA37L4VmqXjp5_qoNYCE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"comment\": \"Second Comment\",\n  \"from\":\"CyberNerd\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8800/posts/comment/651f953461bf9798870d8af8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"posts",
+								"comment",
+								"651f953461bf9798870d8af8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getPostComments",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTFiMTM4OWJjZWJkMWIyNDcwNDk2MGMiLCJpYXQiOjE2OTY1Njc1NDgsImV4cCI6MTY5NjY1Mzk0OH0.QbbHDZAS1gP-evUPNBJJdZzDA37L4VmqXjp5_qoNYCE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8800/posts/comments/651f953461bf9798870d8af8/651f953461bf9798870d8af8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"posts",
+								"comments",
+								"651f953461bf9798870d8af8",
+								"651f953461bf9798870d8af8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "likePost",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTFiMTM4OWJjZWJkMWIyNDcwNDk2MGMiLCJpYXQiOjE2OTY1Njc1NDgsImV4cCI6MTY5NjY1Mzk0OH0.QbbHDZAS1gP-evUPNBJJdZzDA37L4VmqXjp5_qoNYCE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8800/posts/like/651f953461bf9798870d8af8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"posts",
+								"like",
+								"651f953461bf9798870d8af8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "likeComment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTFiMTM4OWJjZWJkMWIyNDcwNDk2MGMiLCJpYXQiOjE2OTY1Njc1NDgsImV4cCI6MTY5NjY1Mzk0OH0.QbbHDZAS1gP-evUPNBJJdZzDA37L4VmqXjp5_qoNYCE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8800/posts/like-comment/65202c11798f961bea31fbfc",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"posts",
+								"like-comment",
+								"65202c11798f961bea31fbfc"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deletePost",
+					"request": {
+						"auth": {
+							"type": "bearer"
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8800/posts/651f970561bf9798870d8afa",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8800",
+							"path": [
+								"posts",
+								"651f970561bf9798870d8afa"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "replyComment",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

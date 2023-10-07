@@ -1,3 +1,4 @@
+import Comments from "../models/commentModel.js";
 import Posts from "../models/postModel.js";
 import Users from "../models/userModel.js";
 
@@ -16,6 +17,12 @@ export const createPost = async (req, res, next) => {
       description,
       image,
     });
+       res.status(200).json({
+        sucess: true,
+        message: "Post created successfully",
+        data: post,
+      });
+      
   } catch (error) {
     console.log(error);
     res.status(404).json({ message: error.message });
@@ -24,7 +31,7 @@ export const createPost = async (req, res, next) => {
 
 export const getPosts = async (req, res, next) => {
   try {
-    const { userId } = req.body.user;
+    const userId  = req.body.user;
     const { search } = req.body;
 
     const user = await Users.findById(userId);
@@ -165,7 +172,7 @@ export const getComments = async (req, res, next) => {
     try {
       const { userId } = req.body.user;
       const { id } = req.params;
-  
+       
       const post = await Posts.findById(id);
   
       const index = post.likes.findIndex((pid) => pid === String(userId));
@@ -198,7 +205,10 @@ export const getComments = async (req, res, next) => {
     try {
       if (rid === undefined || rid === null || rid === `false`) {
         const comment = await Comments.findById(id);
-  
+        if (!comment) {
+            return res.status(404).json({ message: 'Comment not found' });
+          }
+          
         const index = comment.likes.findIndex((el) => el === String(userId));
   
         if (index === -1) {
@@ -271,7 +281,7 @@ export const getComments = async (req, res, next) => {
       //updating the post with the comments id
       const post = await Posts.findById(id);
   
-      post.comments.push(newComment._id);
+      post.commments.push(newComment._id);
   
       const updatedPost = await Posts.findByIdAndUpdate(id, post, {
         new: true,
