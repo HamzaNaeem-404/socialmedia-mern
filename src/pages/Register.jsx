@@ -10,16 +10,42 @@ import { useDispatch } from 'react-redux'
 import Loading from '../components/Loading'
 import CustomButton from '../components/CustomButton'
 import { BgImage } from '../assets'
+import { apiRequest } from '../utils'
 
 const Register = () => {
+  const [errMsg, setErrMsg] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const dispath = useDispatch();
+
   const { register, handleSubmit, getValues, formState: { errors }, } = useForm({ mode: "onChange" })
 
   const onSubmit = async (data) => {
-
+   
+    setIsSubmitting(true);
+    try{
+       const res= await apiRequest({
+        url: "/auth/register",
+        data: data,
+        method: "POST",
+       });
+       
+       console.log(res);
+       if(res?.status==="failed"){
+        setErrMsg(res);
+       } else {
+        setErrMsg(res);
+        setTimeout(()=>{
+          window.location.replace("/login");
+        }, 1500);
+       }
+       setIsSubmitting(false);
+    }
+    catch(err){
+    console.log(err);
+    setIsSubmitting(false);
+    } 
   }
-  const [errMsg, setErrMsg] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const dispath = useDispatch()
+  
   return (
     <div className='bg-bgColor w-full h-[100vh] flex items-center justify-center p-6'>
       <div className='w-full md:w-2/3 h-fit lg:h-full 2xl:h-5/6 py-8 lg:py-0 
@@ -171,6 +197,6 @@ const Register = () => {
       </div>
     </div>
   )
-}
+};
 
 export default Register

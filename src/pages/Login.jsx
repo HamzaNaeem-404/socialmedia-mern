@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { set, useForm } from 'react-hook-form'
 import { TbSocial } from 'react-icons/tb'
 import {BsShare} from 'react-icons/bs'
 import TextInput from '../components/TextInput'
@@ -8,16 +8,43 @@ import { useDispatch } from 'react-redux'
 import Loading from '../components/Loading'
 import CustomButton from '../components/CustomButton'
 import { BgImage } from '../assets'
+import { apiRequest } from '../utils'
+import { UserLogin } from '../redux/userSlice'
 
 const Login = () => {
-  const { register, handleSubmit, formState: { errors }, } = useForm({ mode: "onChange" })
-
-  const onSubmit = async (data)=>{
-    
-  }
   const [errMsg, setErrMsg] = useState("");
   const [isSubmitting, setIsSubmitting]= useState(false);
-  const dispath = useDispatch()
+  const dispatch = useDispatch();
+
+  const { register, handleSubmit, formState: { errors }, } = useForm({ mode: "onChange" })
+
+  const onSubmit = async (data) => {
+    setIsSubmitting(true);
+    try {
+      const res = await apiRequest({
+        url: "/auth/login",
+        data: data,
+        method: "POST",
+      });
+
+      if (res?.status === "failed") {
+        setErrMsg("Invalid ID or Password");
+        return;
+      } else {
+        setErrMsg(res);
+        const newData = { token: res?.token, ...res?.user };
+        dispatch(UserLogin(newData));
+        window.location.replace("/");
+      }
+    } catch (error) {
+      console.log(error);
+      setErrMsg("An error occurred while logging in.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+  
+ 
   return (
     <div className='bg-bgColor w-full h-[100vh] flex items-center justify-center p-6'>
       <div className='w-full md:w-2/3 h-fit lg:h-full 2xl:h-5/6 py-8 lg:py-0 flex bg-primary rounded-xl overflow-hidden shadow-xl'>
