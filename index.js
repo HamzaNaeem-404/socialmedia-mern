@@ -24,7 +24,7 @@ dbConnection();
 app.use(helmet());
 
 const corsOptions = {
-    origin: 'http://localhost:3000',
+    origin: 'https://social-buzz.netlify.app',
     methods: 'GET, PUT, POST, DELETE',
     credentials: true,
 }
