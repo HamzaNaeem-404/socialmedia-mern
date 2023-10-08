@@ -22,7 +22,13 @@ const PORT = process.env.PORT || 8800;
 dbConnection();
 
 app.use(helmet());
-app.use(cors());
+
+const corsOptions = {
+    origin: 'http://localhost:3000',
+    methods: 'GET, PUT, POST, DELETE',
+    credentials: true,
+}
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
 app.use(bodyParser.urlencoded({ extended: true }));
