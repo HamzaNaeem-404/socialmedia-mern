@@ -100,7 +100,7 @@ const Home = () => {
         token: user?.token,
         method: "POST",
       });
-      console.log(res?.data)
+      // console.log(res?.data)
       setSuggestedFriends(res?.data);
     } catch(error) {
       console.log(error);
@@ -254,11 +254,21 @@ const Home = () => {
           </form>
 
               { loading? (<Loading />): posts?.length>0 ?(
-                posts?.map((post)=>(
-                  <PostCard key={post?._id} post={post} user={user} 
-                  deletePost= {handleDelete} 
-                  likePost= {handleLikePost}/> 
-                ))
+                posts?.map((post)=>{
+
+                  if (post) {
+                    return (
+                      <PostCard
+                        key={post._id} // Ensure post is not null before accessing _id
+                        post={post}
+                        user={user}
+                        deletePost={handleDelete}
+                        likePost={handleLikePost}
+                      />
+                    );
+                  }
+                  return null; // Return null for null posts
+                })
               ):(
                   <div className='flex w-full h-full items-center justify-center'>
                     <p className='text-lg ext-ascent-2'>No Post Available</p>

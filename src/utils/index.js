@@ -1,7 +1,8 @@
 import axios from "axios";
 import { SetPosts } from "../redux/postSlice.js";
 
-const API_URL = "http://localhost:8800";
+// const API_URL = "http://localhost:8800";
+const API_URL = "https://mernstack-socialbuzz.onrender.com";
 
 export const API = axios.create({
     baseURL : API_URL,
