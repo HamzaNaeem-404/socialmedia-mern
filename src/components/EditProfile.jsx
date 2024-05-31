@@ -138,9 +138,9 @@ const EditProfile = () => {
                })}
                error={errors.location ? errors.location?.message:""}
               />
-
+               <p className='text-ascent-2 pt-2 text-sm'>Profile Picture</p>
               <label className='flex items-center gap-1 text-base text-ascent-2
-              hover:text-ascent-1 cursor-pointer my-4'
+              hover:text-ascent-1 cursor-pointer my-4 -mt-0'
               htmlFor='imgUpload'>
                 <input 
                  type='file'
